@@ -115,7 +115,8 @@ venv.bak/
 !/example/cmd.txt
 /example/
 /inputFile/
-!/example/inchikeys.txt
+
 
 # output files
 /iphylo_files/*
+!/example/inchikeys.txt
