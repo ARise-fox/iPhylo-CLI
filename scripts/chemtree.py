@@ -258,7 +258,7 @@ def draw_ascii_tree(prefix_fname):
         with open(f_ascii, 'w') as fd:
             Phylo.draw_ascii(tree, file=fd)
             # print(f'Tree and ASCII tree is saved to {my_prefix_fname}')
-            print(f'Tree and ASCII tree is saved with path and name prefix: {prefix_fname}')
+            print(f'Tree and ASCII tree is saved to: {fp}')
     else:
         print('ascii_tree load failed')
         # tree = Phylo.read('newick.txt', "newick")
@@ -450,11 +450,14 @@ def no_match_output(none_inchikey, none_classify_id, subtree_wrong_name, prefix,
                 data = pd.read_csv(csv)
                 # 筛选出对应的行
                 filtered_data = data[data['id'].isin(none_classify_id)]
-                # 提取inchikey列并转换为列表
-                none_classified_inchikey_list = filtered_data['inchikey'].tolist()
-                f.write('\n\n\n------No classification information found for these InChIKeys------\n')
-                for nc_inchikey in none_classified_inchikey_list:
-                    f.write(nc_inchikey + '\n')
+
+                # 提取inchikey列并转换为列表  错误，不一定具有inchikey
+
+                none_classified_chemicals_list = filtered_data.to_string()
+                print(none_classified_chemicals_list)
+                f.write('\n\n\n------No classification information found for these chemicals------\n')
+                f.write(none_classified_chemicals_list)
+
             except FileNotFoundError:
                 f.write('\n\n\n------No classification information found for these IDs------\n')
                 for nc_inchikey in none_classify_id:

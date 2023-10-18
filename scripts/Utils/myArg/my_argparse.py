@@ -2,31 +2,35 @@ import argparse
 import os
 import sys
 
+
 def add_arguments(parser):
-    parser.add_argument('-input', dest='items', type=str,
+    parser.add_argument('-i', '--input', dest='items', type=str,
                         help='Generate a tree by taxid or names, separate the entries '
                              'with commas in English format, mixed input supported. \n'
-                             'Example: -input Homo sapiens,Mus musculus,9031,7227,562',
+                             'Example: -input \"Homo sapiens,Mus musculus,9031,7227,562\"',
                         default="")
-    parser.add_argument('-file', dest="file", type=str, help='Parameter: file path, need to be a .txt file, each line '
-                                                             'in txt is a taxid or name. \n'
-                                                             'Example: -file species_taxid_for_tree.txt ')
+    parser.add_argument('-f', '--file', dest="file", type=str, help='Parameter: file path, need to be a .txt file, '
+                                                                    'each line'
+                                                                    'in txt is a taxid or name. \n'
+                                                                    'Example: -file species_taxid_for_tree.txt ')
     # -subtree is replaced by -input xx|subtree
-    parser.add_argument('-subtree', type=str, help='Draw subtree of a certain taxon. Parameter: taxid or name. '
-                                                   'Example: -subtree Mammalia')
-    parser.add_argument('-out', dest='out_path', type=str, help='Output the tree file to the specified file path, '
-                                                                'support newick and phyloxml format. \n '
-                                                                'Example: -mk 9606,10090,9031,7227,562 -out '
-                                                                '"C:\mytest.txt"',
-                        default='newick.txt')
-    parser.add_argument('-prefix', type=str, default=os.path.abspath(
+    parser.add_argument('--subtree', type=str, help='Draw subtree of a certain taxon. Parameter: taxid or name. '
+                                                    'Example: -subtree Mammalia, also you can use \' -input xx|subtree '
+                                                    '\' instead.')
+    # parser.add_argument('-o', '--out', dest='out_path', type=str, help='Output the tree file to the specified file path, '
+    #                                                             'support newick and phyloxml format. \n '
+    #                                                             'Example: -i 9606,10090,9031,7227,562 -out '
+    #                                                             '"C:\mytest.txt"',
+    #                     default='newick.txt')
+    parser.add_argument('-o', '--prefix', type=str, default=os.path.abspath(
         os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), 'iphylo_files')),
-                        help='Output file prefix, defult current path')
-    parser.add_argument('-fname', type=str, default='iPHYLO_Tree', help='Output file name')
+                        help='Output file directory, default \'iphylo_files/\' in the current project')
+
+    parser.add_argument('-fn', '--fname', type=str, default='iPHYLO_Tree', help='Output file name')
     parser.add_argument('-bl', '--branch_length', dest='branch_length', action='store_true', default=False,
-                        help='Choose whether you need '
+                        help='Boolean, choose whether you need '
                              'branch length for the tree.'
-                             'Default Flase')
+                             'Default False')
     parser.add_argument('-interrupt', action='store_true', default=False, help='Interrupt the tree at specified '
                                                                                'taxonomic level. You need to input '
                                                                                'the level parameter to make it work. \n'
@@ -57,6 +61,6 @@ def get_parser():
     parser = argparse.ArgumentParser(
         description='Build a phylogenetic tree by taxid or name in NCBI taxonomy database. You are advised to wrap '
                     'the command in double quotation marks. The generated tree is written to the path "newick.txt" in '
-                    'the current directory by default, you can change the output directory by command \'-out\' ')
+                    'the current directory by default, you can change the output directory by command \'-o\' ')
     parser = add_arguments(parser)
     return parser

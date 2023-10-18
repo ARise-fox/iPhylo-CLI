@@ -383,7 +383,7 @@ def get_id_list_by_rank(rank_name, rank_query, cursor):
     :param cursor:
     :return:
     """
-    sql_find_id_by_rank = "SELECT id from id2lineage_copy1 WHERE " + str(rank_name) + " = '" + str(rank_query) + "'"
+    sql_find_id_by_rank = "SELECT id from id2lineage WHERE " + str(rank_name) + " = '" + str(rank_query) + "'"
     # print(sql_find_id_by_rank)
     cursor.execute(sql_find_id_by_rank)
     res = cursor.fetchall()
@@ -410,7 +410,7 @@ def draw_ascii_tree(prefix_fname):
         with open(f_ascii, 'w') as fd:
             Phylo.draw_ascii(tree, file=fd)
             # print(f'Tree and ASCII tree is saved to {my_prefix_fname}')
-            print(f'Tree and ASCII tree is saved with path and name prefix: {prefix_fname}')
+            print(f'Tree and ASCII tree is saved to: {fp}')
     else:
         print('ascii_tree load failed')
         # tree = Phylo.read('newick.txt', "newick")
@@ -622,8 +622,6 @@ def main(args):
     # print("parser", parser)
     # print("args", args)
     item_input = str(args.items)
-    # 输出文件路径
-    out_path = str(args.out_path)
     # 输入的字符串冒号和空白字符替换为下划线，与数据库格式匹配
     sub_name_or_id = args.subtree
     # in_str = input("Enter taxid or names, separate the entries with commas, or enter xx|subtree for subtree : ")

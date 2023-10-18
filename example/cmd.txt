@@ -1,0 +1,73 @@
+
+
+# phylotree module
+## Help with parameters
+python iphylo.py phylotree -h
+python iphylo.py phylotree --help
+
+
+## Generate the subtree of Primates, using '--subtree' or '--input'
+python iphylo.py phylotree --subtree Primates
+python iphylo.py phylotree --input "Primates|subtree"
+
+
+## Generate a phylogenetic tree from scientific names, using '-i' or '--input'
+python iphylo.py phylotree -i "Homo sapiens,Mus musculus,Gallus gallus,Drosophila melanogaster,Escherichia coli"
+
+
+## Generate a phylogenetic tree from taxIDs, using '-i' or '--input'
+python iphylo.py phylotree -i 9606,10090,9031,7227,562
+
+
+## Generate a phylogenetic tree from files using '-f' or '--file'
+python iphylo.py phylotree -f 'example/taxids_50.txt'
+
+## Set the output file name and path, using '-o' and '-fn'
+python iphylo.py phylotree -i 9606,10090,9031,7227,562 -o './iphylo_files' -fn 'phylo_01'
+
+## Set the branch length to 1
+python iphylo.py phylotree -i 9606,10090,9031,7227,562 -bl
+
+## Interrupt the tree at Genus level, using '-interrupt' and '--g'
+## Other parameters: --p for Phylum, --c for CLass, --o for Order, --f for family, --s for Species
+python iphylo.py phylotree -i 9606,10090,9031,7227,562 -interrupt --g
+
+
+
+# chemtree module
+## Help with parameters
+python iphylo.py chemtree -h
+python iphylo.py chemtree --help
+
+## Generate a chemical tree from files, set output directory and file name
+python iphylo.py chemtree -f 'example/inchikeys.txt' -o '/Users/liyueer/Documents/iphylo/logo' -fn '111'
+
+## Interrupt the tree at Class level, using '-interrupt' and '--Class'
+## Other parameters: --Super for Superclass, --sub for Subclass
+python iphylo.py chemtree -f 'example/inchikeys.txt' -interrupt --Class
+
+## Build a subtree
+python iphylo.py chemtree -i "Pentalenes|subtree,Hydroxyindoles|subtree"
+
+
+
+# chemonline module
+## Get help
+python iphylo.py chemonline -h
+
+## Generate a chemical tree using ClassyFire API
+## -fn, --fname: set output file name
+## -bl, --branch_length: set the tree with branch length 1
+## -x, --threads: number of running threads
+python iphylo.py chemonline -f 'example/inchikeys_for_online.txt' --fname 'chem_02' -bl -x 12
+
+
+
+# csv2tree Module
+## Generate a statistical analysis methods tree
+python iphylo.py csv2tree -f 'example/statistical_methods.csv'
+## Use -fg, --fill_gap to fill the column gaps in the data frame
+## Use -xh, --header to ignore the first row of the data frame
+python iphylo.py csv2tree -f 'example/statistical_methods_2.csv' -fg -xh
+
+

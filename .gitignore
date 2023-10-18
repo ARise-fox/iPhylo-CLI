@@ -111,12 +111,11 @@ venv.bak/
 /data/*
 
 # example
-!/example/inchikeys.txt
-!/example/cmd.txt
-/example/
+
 /inputFile/
 
 
 # output files
 /iphylo_files/*
-!/example/inchikeys.txt
+
+/example01/

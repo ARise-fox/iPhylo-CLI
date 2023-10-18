@@ -113,14 +113,13 @@ def main(args):
     file_path = args.file
     fill_gap = args.fill_gap
     has_header = args.has_header
-    output = args.out
+    output_prefix_name = os.path.join(args.prefix, args.out_name)
     has_branch_length = args.branch_length
 
-    if not (output.endswith(".txt") or output.endswith(".nwk")):
-        print("output file must end with '.txt' or '.nwk'")
-        exit()
-    else:
-        output_nex = output[:-3] + "nex"
+    if not output_prefix_name.endswith(('.txt', '.nwk')):
+        output = output_prefix_name + '.txt'
+
+    output_nex = output_prefix_name + "nex"
 
     data = csv_to_list(file_path, fill_gap, has_header)
     # print(data)
@@ -136,6 +135,7 @@ def main(args):
             Phylo.convert(output_nex, "nexus", output, "newick")
             # 删除nex
             os.remove(output_nex)
+        print(f'The tree is saved to: {args.prefix}')
 
     except:
         print("convert to tree error")

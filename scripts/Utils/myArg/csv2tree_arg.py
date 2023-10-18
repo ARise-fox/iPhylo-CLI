@@ -1,12 +1,15 @@
 import argparse
 import os
+import sys
 
 
 def add_arguments(parser):
     parser.add_argument('-f', '--file', dest='file', type=str,
                         help='csv table, each column should represent a taxon')
-    parser.add_argument('-o', '--out', dest='out', type=str, default='tree_from_csv.txt',
-                        help='csv table, each column should represent a taxon')
+    parser.add_argument('-o', '--prefix', dest='prefix', type=str, default=os.path.abspath(
+        os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), 'iphylo_files')),
+                        help='output directory')
+    parser.add_argument('-fn', '--fname', dest='out_name', type=str, default='iPHYLO_Tree', help='Output file name')
     parser.add_argument('-fg', '--fill-gap', dest='fill_gap', action='store_true', default=False,
                         help='fill the classification gap (some missing classificaltion level) in each row')
     parser.add_argument('-xh', '--header', dest='has_header', action='store_true', default=False,

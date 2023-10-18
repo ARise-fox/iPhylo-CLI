@@ -277,7 +277,7 @@ def draw_ascii_tree(prefix_fname):
         with open(f_ascii, 'w') as fd:
             Phylo.draw_ascii(tree, file=fd)
             # print(f'Tree and ASCII tree is saved to {my_prefix_fname}')
-            print(f'Tree and ASCII tree is saved with path and name prefix: {prefix_fname}')
+            print(f'Tree and ASCII tree is saved to: {fp}')
     else:
         print('ascii_tree load failed')
         # tree = Phylo.read('newick.txt', "newick")
