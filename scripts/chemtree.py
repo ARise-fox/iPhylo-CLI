@@ -50,7 +50,7 @@ def connect_db():
     if not os.path.exists(db_file):
         user_input = input(f"Necessary database resources (587.3 MB) not found. Do you want to download it? (y/n): ")
         if user_input.lower() == 'y':
-            url = 'http://222.190.246.202:35000/resource/ichem_db'
+            url = 'https://iphylo.net/resource/ichem_db'
             download_db_file(url, db_file)
         else:
             print("Exiting iPhylo command-line.")
