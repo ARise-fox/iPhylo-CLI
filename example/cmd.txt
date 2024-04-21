@@ -71,3 +71,11 @@ python iphylo.py csv2tree -f 'example/statistical_methods.csv'
 python iphylo.py csv2tree -f 'example/statistical_methods_2.csv' -fg -xh
 
 
+# NPtree module
+python iphylo.py NPtree -i "OZVHLPSQDONQQJ-BRFBDGPJSA-N,PMKLGQLZGZOFRC-IKPAITLHSA-N,QUZVJYJCAHCGDH-NQLNTKRDSA-N,RBDQPRHHJDVFEQ-XYCAVOTASA-N" -fn "NP1" -interrupt --superclass
+
+# NPonline module
+## This module only accept input in file
+## The input compound must be in the form of isomeric SMILES
+## -x, --threads: number of running threads
+python iphylo.py NPonline -f "./example/smiles.txt" -x 10
