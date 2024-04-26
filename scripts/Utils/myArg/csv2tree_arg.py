@@ -5,7 +5,7 @@ import sys
 
 def add_arguments(parser):
     parser.add_argument('-f', '--file', dest='file', type=str,
-                        help='csv table, each column should represent a taxon')
+                        help='The input csv table, each column should represent a taxon')
     parser.add_argument('-o', '--prefix', dest='prefix', type=str, default=os.path.abspath(
         os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), 'iphylo_files')),
                         help='output directory')

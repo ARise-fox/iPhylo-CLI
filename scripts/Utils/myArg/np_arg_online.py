@@ -5,30 +5,22 @@ import sys
 
 def add_arguments(parser):
 
-    parser.add_argument('-f', '--file', dest="file", type=str, help='Parameter: file path, need to be a .txt file, each line '
-                                                             'in txt is SMILES for a chemical compound \n'
-                                                             'Example: -file smiles.txt ')
+    parser.add_argument('-f', '--file', dest="file", type=str, help='Input file, must be a .txt file. Each line in the txt should contain a SMILES representation of a chemical compound. Example: -f example/smiles.txt')
     # -subtree is replaced by -input xx|subtree
 
     parser.add_argument('-o', '--prefix', type=str, default=os.path.abspath(
         os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), 'iphylo_files')),
-                        help='Output file prefix, default current path')
-    parser.add_argument('-fn', '--fname', type=str, default='NP_Tree', help='Output file name')
+                        help='Output file prefix, default is the current path.')
+    parser.add_argument('-fn', '--fname', type=str, default='NP_Tree', help='Output file name.')
     parser.add_argument('-bl', '--branch_length', dest='branch_length', action='store_true', default=False,
-                        help='Choose whether you need '
-                             'branch length for the tree.'
-                             'Default Flase')
+                        help='Choose whether to include branch length in the tree. Default: False.')
     parser.add_argument('-interrupt', action='store_true', default=False, help='Interrupt the tree at specified '
-                                                                               'taxonomic level. You need to input '
-                                                                               'the level parameter to make it work. \n'
-                                                                               'Example: -file '
-                                                                               '"smiles.txt" '
-                                                                               '-interrupt --pathway')
+                                                                               'taxonomic level. You must specify the level parameter for this to work. Example: -interrupt --pathway')
 
-    parser.add_argument('--pathway', action='store_true', default=False, help='interrupt at pathway level')
-    parser.add_argument('--superclass', action='store_true', default=False, help='interrupt at superclass level')
+    parser.add_argument('--pathway', action='store_true', default=False, help='Interrupt the tree at the pathway level.')
+    parser.add_argument('--superclass', action='store_true', default=False, help='Interrupt the tree at the superclass level.')
     parser.add_argument('-x', '--threads', dest='threads', type=int, default=3,
-                        help='threads number')
+                        help=' Number of threads, default is 3.')
 
     return parser
 

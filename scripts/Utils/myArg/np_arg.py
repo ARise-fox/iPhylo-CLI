@@ -11,26 +11,21 @@ def add_arguments(parser):
                              'LCSIRHSEQLDODB-XSWRHYEBSA-N, LERTZPRWBVXJDZ-WSXCIZDTSA-N, LIYNAWWFJZSTGA-MYWJTRDOSA-N',
                         default="")
     parser.add_argument('-f', '--file', dest="file", type=str,
-                        help='Parameter: file path, need to be a .txt file, each line '
-                             'should be InChI, InChIKeys or isomeric SMILES. \n'
-                             'Example: -file nature_products.txt ')
+                        help='Input file path, must be a .txt file, each line in the txt '
+                             'should be InChI, InChIKeys or isomeric SMILES format for a chemical compounds. \n'
+                             'Example: -file example/nature_products.txt ')
     # -subtree is replaced by -input xx|subtree
 
     parser.add_argument('-o', '--prefix', type=str, default=os.path.abspath(
         os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), 'iphylo_files')),
-                        help='Output file prefix, default current path')
-    parser.add_argument('-fn', '--fname', type=str, default='iPHYLO_NP_Tree', help='Output file name')
+                        help='Output file prefix, default is the current path.')
+    parser.add_argument('-fn', '--fname', type=str, default='iPHYLO_NP_Tree', help='Output file name.')
     parser.add_argument('-bl', '--branch_length', dest='branch_length', action='store_true', default=False,
-                        help='Choose whether you need '
-                             'branch length for the tree.'
-                             'Default Flase')
-    parser.add_argument('-interrupt', action='store_true', default=False, help='Interrupt the tree at specified '
-                                                                               'taxonomic level. You need to input '
-                                                                               'the level parameter to make it work. \n'
-                                                                               '-interrupt --superclass')
+                        help='Choose whether to include branch length in the tree. Default: False.')
+    parser.add_argument('-interrupt', action='store_true', default=False, help='Interrupt the tree at a specified taxonomic level. You must specify the level parameter for this to work. Example: -interrupt --superclass')
 
-    parser.add_argument('--pathway', action='store_true', default=False, help=' interrupt at Pathway')
-    parser.add_argument('--superclass', action='store_true', default=False, help='interrupt at Superclass')
+    parser.add_argument('--pathway', action='store_true', default=False, help=' Interrupt at the pathway level.')
+    parser.add_argument('--superclass', action='store_true', default=False, help=' Interrupt at the superclass level.')
 
     return parser
 
