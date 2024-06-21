@@ -27,6 +27,9 @@ Use the following commands with `-h` to see for the details of how it accepts pa
 <br>
 `python iphylo.py NPonline`
 
+## License
+
+This project is licensed under the GPL License - see the [LICENSE](LICENSE) file for details.
 
 
 
