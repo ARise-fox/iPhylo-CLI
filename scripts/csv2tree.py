@@ -1,3 +1,4 @@
+import math
 import os
 import re
 
@@ -30,8 +31,13 @@ def check_parent_node(df):
 
     # 打印字典内容
     for child_node, parent_nodes in parent_dict.items():
-        print(f"Child Node: {child_node}")
-        print(f"Parent Nodes: {', '.join(parent_nodes)}")
+        # string "nan" replace NaN
+        child_node_str = str(child_node) if not (isinstance(child_node, float) and math.isnan(child_node)) else 'nan'
+        print(f"Child Node: {child_node_str}")
+        formatted_parent_nodes = [str(node) if not (isinstance(node, float) and math.isnan(node)) else 'nan' for node in
+                                  parent_nodes]
+        print(f"Parent Nodes: {', '.join(formatted_parent_nodes)}")
+
         print()
 
 
@@ -135,7 +141,7 @@ def main(args):
             Phylo.convert(output_nex, "nexus", output, "newick")
             # 删除nex
             os.remove(output_nex)
-        print(f'The tree is saved to: {args.prefix}')
+        print(f'The tree is saved to: {output}')
 
     except:
         print("convert to tree error")
