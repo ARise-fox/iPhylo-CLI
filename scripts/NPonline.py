@@ -241,8 +241,9 @@ def no_match_output(none_inchikey, none_classify_id, prefix, csv):
     fname = os.path.join(prefix, 'no_match_result.txt')
     with open(fname, 'w') as f:
         if len(none_inchikey) > 0:
-            f.write(f"------These InChIKeys could not be found in the database------\n")
-            for inchikey in none_inchikey:
+            unique_inchikeys = list(set(none_inchikey))
+            f.write(f"------These SMILES could not be found in the database------\n")
+            for inchikey in unique_inchikeys:
                 f.write(inchikey + '\n')
         if len(none_classify_id) > 0:
             try:
@@ -252,7 +253,7 @@ def no_match_output(none_inchikey, none_classify_id, prefix, csv):
                 filtered_data = data[data['id'].isin(none_classify_id)]
                 # 提取inchikey列并转换为列表
                 none_classified_inchikey_list = filtered_data['inchikey'].tolist()
-                f.write('\n\n\n------No classification information found for these InChIKeys------\n')
+                f.write('\n\n\n------No classification information found for these SMILES------\n')
                 for nc_inchikey in none_classified_inchikey_list:
                     f.write(nc_inchikey + '\n')
             except FileNotFoundError:
@@ -572,8 +573,9 @@ def main(args):
 
     # os.remove(txt_path)
     try:
-       if len(error_list) > 0:
-        print(f"------These {len(error_list)} SMILES are not found.------\n{error_list}")
+        if len(error_list) > 0:
+            uniq_error_list = list(set(error_list))
+            print(f"------These {len(uniq_error_list)} SMILES are not found.------\n{uniq_error_list}")
     except:
         pass
     if len(none_classify_id) != 0:
