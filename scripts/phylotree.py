@@ -283,6 +283,9 @@ def id_list_to_newick(id_list, cursor, *interrupt_level, anno_name, path, csv_wr
     # lin_list: 一个二维数组，访问第1个物种的第2个rank应该用lin_list[0][1]
     lin_list = []
     anno_2d_list = []
+    # 记录scientific name 和 leaf node 的 mapping
+    name_res_mapping = {}  # 用于记录name和res[-1]的映射关系
+
     # 如果需要在某level打断，找到该level对应的index
     if interrupt_flag == 1:
         level_list = ["p", "c", "o", "f", "g", "s"]
@@ -342,6 +345,10 @@ def id_list_to_newick(id_list, cursor, *interrupt_level, anno_name, path, csv_wr
         anno_list.insert(0, item)
         anno_2d_list.append(anno_list)
 
+        # 记录name和res[-1]的映射关系
+        if res:
+            name_res_mapping[name] = res[-1]
+
     # 二维列表去重，需要先转化为tuple
     if interrupt_flag == 1:
         lin_list = list(set([tuple(t) for t in lin_list]))
@@ -351,6 +358,7 @@ def id_list_to_newick(id_list, cursor, *interrupt_level, anno_name, path, csv_wr
     # print(lin_list)
     # 生成树文件
     newick.showtree(data=lin_list, path=path)
+    return name_res_mapping
 
 
 def get_rank(item, cursor, isdigit):
@@ -617,10 +625,7 @@ def main(args):
     start = time.perf_counter()
     # 建立数据库连接
     conn, cursor = connect_db()
-    # parser = get_parser()
-    # args = parser.parse_args()
-    # print("parser", parser)
-    # print("args", args)
+
     item_input = str(args.items)
     # 输入的字符串冒号和空白字符替换为下划线，与数据库格式匹配
     sub_name_or_id = args.subtree
@@ -631,13 +636,6 @@ def main(args):
 
     # 写入csv
 
-    # if "-i" in in_str:
-    #     interrupt_flag = 1
-    #     index = in_str.rfind(" -i ")
-    #     interrupt_level = in_str[index + 4:]
-    #     in_str = in_str.replace(" -i " + interrupt_level, "")
-    #     print(in_str)
-    #     print(interrupt_level)
 
     if args.interrupt:
         interrupt_flag = 1
@@ -681,6 +679,7 @@ def main(args):
                     line = str(line.strip())
                     in_list = process_line(line, in_list)
                 sub_list, no_sub_list = filter_subtree(in_list)
+                print("no_sub_list", no_sub_list)
                 # 生成替换name文件
                 no_sub_id, name_sciname_map = get_id_and_sciname_list_by_id_or_name(no_sub_list, cursor)
                 sub_id = find_sub_id(item_list=sub_list, cursor=cursor)
@@ -759,11 +758,20 @@ def main(args):
     if interrupt_flag == 1:
         # id_list_to_newick(all_id, cursor, interrupt_level, anno_name=anno_name, path=txt_path, csv_write=csv_write)
         try:
-            id_list_to_newick(all_id, cursor, interrupt_level, anno_name=anno_name, path=txt_path, csv_write=csv_write)
+            sciname_leaf_map = id_list_to_newick(all_id, cursor, interrupt_level, anno_name=anno_name, path=txt_path, csv_write=csv_write)
         except Exception:
             print('Parameter for interrupting needed! Seek help by -h, --help')
     else:
-        id_list_to_newick(all_id, cursor, anno_name, anno_name=anno_name, path=txt_path, csv_write=csv_write)
+        sciname_leaf_map = id_list_to_newick(all_id, cursor, anno_name, anno_name=anno_name, path=txt_path, csv_write=csv_write)
+
+    map_csv_path = outpath_fname + "_name_map.csv"
+    # 写入sciname_leaf_map到CSV文件
+    with open(map_csv_path, 'w', newline='') as csvfile:
+        fieldnames = ['Input Scientific Name', 'Leaf Node in Tree']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for name, leaf in sciname_leaf_map.items():
+            writer.writerow({'Input Scientific Name': name, 'Leaf Node in Tree': leaf})
 
     # 生成其他格式的树
     try:

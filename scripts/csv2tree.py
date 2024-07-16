@@ -1,6 +1,7 @@
 import math
 import os
 import re
+import traceback
 
 import numpy as np
 import pandas as pd
@@ -62,6 +63,7 @@ def replace_nan(row):
     for i in range(len(row_values)):
         if row_values[i] is None:
             if previous_value is not None:
+                # print(previous_value)
                 row_values[i] = previous_value + '+'
                 previous_value = row_values[i]
         else:
@@ -93,10 +95,25 @@ def csv_to_list(file_path, fill_gap=False, has_header=True):
     if has_header:
         df = df.iloc[1:]  # 去掉头部行
 
-
-
     df = df.fillna(np.nan)
     df = df.replace({np.nan: None})
+
+    # 确保所有数据都转换为字符串类型
+
+    # df = df.astype(str)
+    def convert_to_int_str(value):
+        if pd.isna(value):
+            return ''
+        try:
+            # 尝试将值转换为浮点数
+            float_value = float(value)
+            # 如果转换成功，将其转换为整数，再转换为字符串
+            return str(int(float_value))
+        except (ValueError, TypeError):
+            # 如果转换失败，保持原始字符串
+            return str(value)
+
+    df = df.applymap(convert_to_int_str)
 
     data = df.values.tolist()
 
@@ -130,6 +147,7 @@ def main(args):
     data = csv_to_list(file_path, fill_gap, has_header)
     # print(data)
     try:
+        # print(data)
         newick.showtree(data, output)
         print("generate tree success")
         if has_branch_length:
@@ -143,5 +161,6 @@ def main(args):
             os.remove(output_nex)
         print(f'The tree is saved to: {output}')
 
-    except:
-        print("convert to tree error")
+    except Exception as e:
+        print("convert to tree error: ", e)
+        traceback.print_exc()
